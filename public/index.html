@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JuDoRks</title>
+        <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" 
+integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    </head>
+    <body style="background-color: rgb(39, 180, 150);" class="container">
+        <h1> Welcome all JuDoRks! Let's talk about Judo!</h1>
+    <div id="createThread" class="row"> 
+        <div class='card' style="background-color: rgb(39, 180, 150);">
+            <form> <!--Form to create a new Thread, will send information in form of an JSON object to an array-->
+                <label>Title</label>
+                <br/>
+                <input type='text' id='title'>
+                <br/>
+                <label>New Thread</label>
+                <br/>
+                <textarea id='content' maxlength="500">
+                </textarea>
+                <br/>
+                <input type='submit' id='submitThread' value='Create Thread'>    
+            </form>
+            </div>
+    </div>
+    
+    <br/>
+    <div id="viewThreads" class="row" > 
+        <button type="button" id="allThreads">View All Threads</button>
+    </div>
+    <div id="threadViewer" class="row"> <!--All threads will show here as cards with comment section-->
+
+    </div>
+
+    </body>
+    <script>
+ //-----------------------------------------------------------------------------------------------------------------//
+        //submits threads that have been created to array will server is in session//
+        document.getElementById('submitThread').addEventListener('click', function(){
+            let title = document.getElementById('title').value ;
+
+            let content = document.getElementById('content').value;
+
+            let newThread = {title,content};
+            fetch('/create', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newThread), //request body that will show in server.js//
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+                })
+
+ //-----------------------------------------------------------------------------------------------------------------//
+//Shows all threads created in session in the form of cards with comment section//
+ document.getElementById('allThreads').addEventListener('click', ()=>{
+     fetch('/threads')
+     .then((response) => response.json())
+     .then((data)=> {
+       console.log(data);
+       output = '';
+       data.forEach(function(each){
+           console.log(each.title);
+           output += `
+           <br/>
+            <div class='row'>
+                <div class='card' style="background-color:rgb(71, 157, 233)">
+                    <h1>${each.title}</h1>
+                    <p>${each.content}</p>
+                    <div class='row'>
+                        <form>
+                        <input type='text' maxlength='500'id='commentText' class='col-12'>
+                        <button id='addComment' class='col-3' onClick=''>Add Comment</button>
+                        <button id='viewComments' class='col-3' onClick=''>View Comments</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br/>
+           ` 
+        })
+        
+        document.getElementById('threadViewer').innerHTML = output
+    })
+ })
+ //-----------------------------------------------------------------------------------------------------------------//
+//function that will provide onClick functionality for comments so they can be added to thread//
+
+createComment = () => {
+var commentText = document.getElementById('commentText').value;
+fetch('/comment', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(), //request body that will show in server.js//
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+                
+}
+
+
+     </script>
+</html>
