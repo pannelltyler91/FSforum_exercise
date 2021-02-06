@@ -34,10 +34,11 @@ app.get('/allThreads', (req,resp) => {
     resp.send(threads);
 })
 
-app.post('/addComment:id', (req,resp) => {
+app.post('/addComment/:id', (req,resp) => {
     
 var threadFound = threads.find((element) => element.id == req.params.id);
 threadFound.thread.commentKey = req.params.commentKey;
+console.log(threadFound.thread.commentKey);
 resp.send(threadFound)
 })
 

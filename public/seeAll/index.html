@@ -39,7 +39,22 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
     })
  //-----------------------------------------------------------------------------------------------------------------//            
     function addComment (threadId){
-        
+    commentKey = document.getElementByTag('input').value;
+    newComment = {commentKey}
+    fetch('/addComment/:id', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newComment), //request body that will show in server.js//
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
 
     }
        
