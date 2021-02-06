@@ -20,23 +20,25 @@ app.post('/', (req,resp) => {
     console.log(req.body);
     var thread = req.body;
 threads.push({id:++idCount, thread});
-resp.send(threads);
 console.log(threads);
+resp.send(threads);
 
 })
 //send completes array of threads as data response
 app.get('/threads', (req,resp) => {
-    resp.json(threads);
+    resp.redirect('/seeAll');
    
 })
 
+app.get('/allThreads', (req,resp) => {
+    resp.send(threads);
+})
 
-app.put('/:id', (req, resp) => {
-    console.log(req.body);
-    var foundThread = threads.find((element) => element.id == parseInt(req.params.id));
-    foundThread.thread.commentKey = req.body;
-    resp.json(foundThread);
+app.post('/addComment:id', (req,resp) => {
     
+var threadFound = threads.find((element) => element.id == req.params.id);
+threadFound.thread.commentKey = req.params.commentKey;
+resp.send(threadFound)
 })
 
 

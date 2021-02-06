@@ -23,7 +23,9 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
     
     <br/>
     <div id="viewThreads" class="row" > 
-        <button id="seeThreads" type="button">See all Threads</button>
+        <form action="/threads" method="GET"> 
+        <input type="submit" value="See All Threads">
+        </form>
     </div>
     <div id="threadViewer" class="row"> <!--All threads will show here as cards with comment section-->
 
@@ -59,56 +61,28 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
                 
             });
  //-----------------------------------------------------------------------------------------------------------------//
-    
-            document.getElementById('seeThreads').addEventListener('click', ()=> {
-                fetch('threads')
-            .then((response) => response.json())
-            .then((data)=> {
-                console.log(data);
-       output = '';
-       data.forEach(function(each){
-           output += `
-           <br/>
-            <div class='row'>
-                <div class='card' style="background-color:rgb(71, 157, 233)">
-                    <p>${each.thread.content}</p>
-                    <div class='row'>
-                        <form id='commentForm'>
-                        <input type='text' maxlength='500'id='comment' class='col-12'>
-                        <button id='addComment' class='col-3'type='submit' >Add Comment</button>
-                        </form>
-                        <button id='viewComments' class='col-3' >View Comments</button>
-                    </div>
-                </div>
-            </div>
-            <br/>
-           ` 
-        })
-        
-        document.getElementById('threadViewer').innerHTML = output
-    })
-            })
+   
  //-----------------------------------------------------------------------------------------------------------------//
 
-  document.getElementById('addComment').addEventListener('click', () => {
-    var comment = document.getElementById('comment').value;
+//   document.getElementById('addComment').addEventListener('submit', () => {
+//     var comment = document.getElementById('comment').value;
     
-fetch('/:id', {
-    method: 'PUT', 
-    headers: {
-        'Content-Type': 'multipart/form-data',
-    },
-    body:Formdata(comment), //request body that will show in server.js//
-    })
-    .then(response => response.json())
-    .then(data => {
-    console.log('Success:', data);
+// fetch('/:id', {
+//     method: 'PUT', 
+//     headers: {
+//         'Content-Type': 'multipart/form-data',
+//     },
+//     body:Formdata(comment), //request body that will show in server.js//
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//     console.log('Success:', data);
     
-    })
-    .catch((error) => {
-    console.error('Error:', error);
-    });
-    })
+//     })
+//     .catch((error) => {
+//     console.error('Error:', error);
+//     });
+//     })
 
 
 
