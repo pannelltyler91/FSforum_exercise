@@ -37,13 +37,10 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
         // submits threads that have been created to array will server is in session//
         document.getElementById('submitThread').addEventListener('click', function(){
            
-
             let content = document.getElementById('content').value;
-
             let commentKey = '';
-            
-
             let newThread = {content,commentKey};
+
             fetch('/', {
                 method: 'POST', 
                 headers: {
@@ -60,32 +57,8 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
                 });
                 
             });
+
  //-----------------------------------------------------------------------------------------------------------------//
-   
- //-----------------------------------------------------------------------------------------------------------------//
 
-//   document.getElementById('addComment').addEventListener('submit', () => {
-//     var comment = document.getElementById('comment').value;
-    
-// fetch('/:id', {
-//     method: 'PUT', 
-//     headers: {
-//         'Content-Type': 'multipart/form-data',
-//     },
-//     body:Formdata(comment), //request body that will show in server.js//
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//     console.log('Success:', data);
-    
-//     })
-//     .catch((error) => {
-//     console.error('Error:', error);
-//     });
-//     })
-
-
-
-
-     </script>
+</script>
 </html>

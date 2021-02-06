@@ -9,6 +9,8 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
 
         <h1> See All Threads</h1>
         <div id="viewer" class="row"></div>
+
+<!------------------------------------------------------------------------------------------------------------------> 
         <script>
           
             fetch('/allThreads')
@@ -38,11 +40,14 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
         document.getElementById('viewer').innerHTML = output
     })
  //-----------------------------------------------------------------------------------------------------------------//            
+   //function that will be used as onSubmit for add comment button, will post comment input to relative 
+   //object in array 
+ 
     function addComment (threadId){
     commentKey = document.getElementByTag('input').value;
     newComment = {commentKey}
-    fetch('/addComment/:id', {
-                method: 'POST', 
+    fetch('/addComment/:'+threadId, {
+                method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -57,9 +62,6 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
                 });
 
     }
-       
-       
-       
        
        </script>
     </body>
