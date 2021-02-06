@@ -13,19 +13,29 @@ let threads = [
 
 ]
 
-app.post('/create', (req,resp) => {
+idCount = 0;
 
-threads.push(req.body);
+//creates a thread and adds it to the array of threads
+app.post('/', (req,resp) => {
+    console.log(req.body);
+    var thread = req.body;
+threads.push({id:++idCount, thread});
+resp.send(threads);
 console.log(threads);
 
 })
-
+//send completes array of threads as data response
 app.get('/threads', (req,resp) => {
     resp.json(threads);
+   
 })
 
-app.put('/comment/title', (req, resp) => {
-    singleThread = threads.find((element) => element.title == parseInt(req.params.title));
+
+app.put('/:id', (req, resp) => {
+    console.log(req.body);
+    var foundThread = threads.find((element) => element.id == parseInt(req.params.id));
+    foundThread.thread.commentKey = req.body;
+    resp.json(foundThread);
     
 })
 

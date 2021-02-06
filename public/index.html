@@ -10,11 +10,7 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
         <h1> Welcome all JuDoRks! Let's talk about Judo!</h1>
     <div id="createThread" class="row"> 
         <div class='card' style="background-color: rgb(39, 180, 150);">
-            <form> <!--Form to create a new Thread, will send information in form of an JSON object to an array-->
-                <label>Title</label>
-                <br/>
-                <input type='text' id='title'>
-                <br/>
+            <form > <!--Form to create a new Thread, will send information in form of an JSON object to an array-->
                 <label>New Thread</label>
                 <br/>
                 <textarea id='content' maxlength="500">
@@ -27,7 +23,7 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
     
     <br/>
     <div id="viewThreads" class="row" > 
-        <button type="button" id="allThreads">View All Threads</button>
+        <button id="seeThreads" type="button">See all Threads</button>
     </div>
     <div id="threadViewer" class="row"> <!--All threads will show here as cards with comment section-->
 
@@ -36,14 +32,17 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
     </body>
     <script>
  //-----------------------------------------------------------------------------------------------------------------//
-        //submits threads that have been created to array will server is in session//
+        // submits threads that have been created to array will server is in session//
         document.getElementById('submitThread').addEventListener('click', function(){
-            let title = document.getElementById('title').value ;
+           
 
             let content = document.getElementById('content').value;
 
-            let newThread = {title,content};
-            fetch('/create', {
+            let commentKey = '';
+            
+
+            let newThread = {content,commentKey};
+            fetch('/', {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,30 +56,28 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
                 .catch((error) => {
                 console.error('Error:', error);
                 });
-                })
-
+                
+            });
  //-----------------------------------------------------------------------------------------------------------------//
-//Shows all threads created in session in the form of cards with comment section//
- document.getElementById('allThreads').addEventListener('click', ()=>{
-     fetch('/threads')
-     .then((response) => response.json())
-     .then((data)=> {
-       console.log(data);
+    
+            document.getElementById('seeThreads').addEventListener('click', ()=> {
+                fetch('threads')
+            .then((response) => response.json())
+            .then((data)=> {
+                console.log(data);
        output = '';
        data.forEach(function(each){
-           console.log(each.title);
            output += `
            <br/>
             <div class='row'>
                 <div class='card' style="background-color:rgb(71, 157, 233)">
-                    <h1>${each.title}</h1>
-                    <p>${each.content}</p>
+                    <p>${each.thread.content}</p>
                     <div class='row'>
-                        <form>
-                        <input type='text' maxlength='500'id='commentText' class='col-12'>
-                        <button id='addComment' class='col-3' onClick=''>Add Comment</button>
-                        <button id='viewComments' class='col-3' onClick=''>View Comments</button>
+                        <form id='commentForm'>
+                        <input type='text' maxlength='500'id='comment' class='col-12'>
+                        <button id='addComment' class='col-3'type='submit' >Add Comment</button>
                         </form>
+                        <button id='viewComments' class='col-3' >View Comments</button>
                     </div>
                 </div>
             </div>
@@ -90,28 +87,30 @@ integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKm
         
         document.getElementById('threadViewer').innerHTML = output
     })
- })
+            })
  //-----------------------------------------------------------------------------------------------------------------//
-//function that will provide onClick functionality for comments so they can be added to thread//
 
-createComment = () => {
-var commentText = document.getElementById('commentText').value;
-fetch('/comment', {
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(), //request body that will show in server.js//
-                })
-                .then(response => response.json())
-                .then(data => {
-                console.log('Success:', data);
-                })
-                .catch((error) => {
-                console.error('Error:', error);
-                });
-                
-}
+  document.getElementById('addComment').addEventListener('click', () => {
+    var comment = document.getElementById('comment').value;
+    
+fetch('/:id', {
+    method: 'PUT', 
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+    body:Formdata(comment), //request body that will show in server.js//
+    })
+    .then(response => response.json())
+    .then(data => {
+    console.log('Success:', data);
+    
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    });
+    })
+
+
 
 
      </script>
